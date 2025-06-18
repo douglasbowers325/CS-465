@@ -7,6 +7,9 @@ import { Trip } from '../models/trip';
 
 import { Router } from '@angular/router';
 
+import { Authentication } from '../services/authentication';
+
+
 
 @Component({
   selector: 'app-trip-listing',
@@ -22,7 +25,7 @@ export class TripListing implements OnInit{
   trips!: Trip[];
   message: string = '';
 
-  constructor(private tripDataService: TripData, private router: Router) {
+  constructor(private tripData: TripData, private router: Router, private authentication: Authentication) {
     console.log('trip-listing constructor');
    }
 
@@ -30,8 +33,12 @@ export class TripListing implements OnInit{
     this.router.navigate(['add-trip']);
   }
 
+  public isLoggedIn(): boolean {
+    return this.authentication.isLoggedIn();
+  }
+
   private getStuff(): void {
-    this.tripDataService.getTrips()
+    this.tripData.getTrips()
       .subscribe({
         next: (value: any) => {
           this.trips = value;
